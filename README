@@ -1,0 +1,11 @@
+This is day one of the latest iteration of the FACore library (Finite Automaton Core). There have been 3 previous versions written in a variety of languages, all of which have been open source but none of which have been in a public forum such as github.
+
+It will take some time to re-implement the functionality, so for now consider this to be a work in progress.
+
+The only requirements are boost and c++11. To build and run the unit test, execute the following:
+
+> g++ -std=c++11 test/TestDeterministicAutomaton.cpp -I src
+> ./a.out
+
+Over and out
+- 4cad
