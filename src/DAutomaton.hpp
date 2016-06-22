@@ -3,6 +3,7 @@
 #include <climits>
 #include <array>
 #include <limits>
+#include <boost/dynamic_bitset.hpp>
 
 namespace FACore {
     
@@ -67,7 +68,7 @@ namespace FACore {
         
         private:
             std::vector<TransitionArr> mTransitions;
-            std::vector<bool> mFinalStates;
+            boost::dynamic_bitset<> mFinalStates;
     };
     
     typedef DAutomaton<2> DFA;
