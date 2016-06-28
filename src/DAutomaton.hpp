@@ -19,6 +19,8 @@ namespace FACore {
             // These arrays will be indexed by Label
             typedef std::array<StateId, ALPHABET_SIZE> TransitionArr;
             
+            constexpr static unsigned int AlphabetSize = ALPHABET_SIZE;
+            
             static inline StateId INVALID_STATE() {
                 return std::numeric_limits<unsigned int>::max();
             }
@@ -53,7 +55,7 @@ namespace FACore {
             }
             
             StateId GetNext(StateId src, Label label) const {
-                if(!IsValid(src) || label ) {
+                if(!IsValid(src) || AlphabetSize <= label ) {
                     return INVALID_STATE();
                 }
                 return mTransitions[src][label];
