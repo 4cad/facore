@@ -34,11 +34,15 @@ namespace FACore {
                     
                     DigitIterator& operator++() {
                         mValue = mValue / ALPHABET_SIZE;
-                        return this;
+                        return *this;
                     }
                     
                     bool operator==(const DigitIterator &other) {
-                        return this.mValue == other.mValue;
+                        return mValue == other.mValue;
+                    }
+                    
+                    bool operator!=(const DigitIterator &other) {
+                        return !operator==(other);
                     }
                 
                 private:

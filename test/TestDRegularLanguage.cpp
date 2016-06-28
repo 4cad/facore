@@ -75,3 +75,43 @@ BOOST_AUTO_TEST_CASE( full_language )
     BOOST_CHECK( InLanguage(emptyLanguage, {1}) );
     BOOST_CHECK( InLanguage(emptyLanguage, {1,0,1}) );
 }
+
+BOOST_AUTO_TEST_CASE( thue_morse )
+{
+    // The thue morse machine accepts a bit string iff it has an odd number of ones
+    DAutomaton<2> *thueMorseMachine = new DAutomaton<2>();
+    auto evenState = thueMorseMachine->AddState(false);
+    auto oddState = thueMorseMachine->AddState(true);
+    
+    thueMorseMachine->SetArc(evenState, 0, evenState);
+    thueMorseMachine->SetArc(evenState, 1, oddState);
+    thueMorseMachine->SetArc(oddState, 0, oddState);
+    thueMorseMachine->SetArc(oddState, 1, evenState);
+    
+    DRegularLanguage<2> thueMorseSequence(thueMorseMachine, evenState);
+    
+    // Test using the normal as well as integer "contains" function
+    BOOST_CHECK( !thueMorseSequence.contains(0) );
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {} ));
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {0} ));
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {0,0} ));
+    
+    BOOST_CHECK( !thueMorseSequence.contains(3) );
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {1,1} ));
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {0,1,1} ));
+    
+    BOOST_CHECK( !thueMorseSequence.contains(5) );
+    BOOST_CHECK( NotInLanguage(thueMorseSequence, {1,0,1} ));
+    
+    
+    BOOST_CHECK( thueMorseSequence.contains(1) );
+    BOOST_CHECK( InLanguage(thueMorseSequence, {1}) );
+    BOOST_CHECK( InLanguage(thueMorseSequence, {0,1}) );
+    
+    BOOST_CHECK( thueMorseSequence.contains(2) );
+    BOOST_CHECK( InLanguage(thueMorseSequence, {1,0}) );
+    BOOST_CHECK( InLanguage(thueMorseSequence, {0,1,0}) );
+    
+    BOOST_CHECK( thueMorseSequence.contains(4) );
+    BOOST_CHECK( InLanguage(thueMorseSequence, {1,0,0}) );
+}
