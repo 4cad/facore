@@ -1,8 +1,7 @@
 #include <stdexcept>
 #include <limits>
-// TODO I would really like to use flat_map for cache efficiency, but it takes too long to compile for some reason
-// #include <boost/container/flat_map.hpp>
-#include <map>
+
+#include <boost/container/flat_map.hpp>
 #include <boost/dynamic_bitset.hpp>
 
 namespace FACore {
@@ -22,7 +21,7 @@ namespace FACore {
             // <(src,label),dest>
             typedef std::pair<std::tuple<StateId,Label>,StateId> TransitionMapEntry;
             
-            typedef std::multimap<std::tuple<StateId,Label>,StateId>::const_iterator TransitionIterator;
+            typedef boost::container::flat_multimap<std::tuple<StateId,Label>,StateId>::const_iterator TransitionIterator;
             
             class ArcRange {
                 public:
@@ -85,7 +84,7 @@ namespace FACore {
             }
         
         private:
-            std::multimap<std::tuple<StateId,Label>,StateId> mTransitions;
+            boost::container::flat_multimap<std::tuple<StateId,Label>,StateId> mTransitions;
             boost::dynamic_bitset<> mFinalStates;
     };
     
@@ -93,17 +92,17 @@ namespace FACore {
     
     
     template<typename StateId, typename Label>
-    StateId ArcSource( const std::pair<const std::tuple<StateId,Label>,StateId> &entry ) {
+    StateId ArcSource( const std::pair<std::tuple<StateId,Label>,StateId> &entry ) {
         return std::get<0>(entry->first);
     }
     
     template<typename StateId, typename Label>
-    StateId ArcLabel( const std::pair<const std::tuple<StateId,Label>,StateId> &entry ) {
+    StateId ArcLabel( const std::pair<std::tuple<StateId,Label>,StateId> &entry ) {
         return std::get<1>(entry->first);
     }
     
     template<typename StateId, typename Label>
-    StateId ArcDestination( const std::pair<const std::tuple<StateId,Label>,StateId> &entry ) {
+    StateId ArcDestination( const std::pair<std::tuple<StateId,Label>,StateId> &entry ) {
         return entry.second; // std::get<0>(entry->first);
     }
 }
