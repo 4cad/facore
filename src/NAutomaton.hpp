@@ -7,9 +7,12 @@
 
 namespace FACore {
     
-    template<unsigned int ALPHABET_SIZE>
+    template<unsigned int AlphabetSize>
     class NAutomaton {
         public:
+            constexpr static unsigned int ALPHABET_SIZE = AlphabetSize;
+            constexpr static unsigned int INVALID_STATE = std::numeric_limits<unsigned int>::max();
+            
             // A StateId is really just an index into a vector
             typedef unsigned int StateId;
             
@@ -37,12 +40,8 @@ namespace FACore {
                     TransitionIterator mIterEnd;
             };
             
-            static inline StateId INVALID_STATE() {
-                return std::numeric_limits<unsigned int>::max();
-            }
-            
             StateId AddState(bool isFinal) {
-                if(mFinalStates.size() == INVALID_STATE()) {
+                if(mFinalStates.size() == INVALID_STATE) {
                     // WARNING this is outside of testing code coverage
                     throw std::out_of_range("Invalid label"); 
                 }
@@ -52,21 +51,25 @@ namespace FACore {
             }
             
             void AddArc(StateId src, Label label, StateId dest) {
-                if(ALPHABET_SIZE <= label) {
+                if(!IsValidLabel(label)) {
                     throw std::out_of_range("Invalid label");
                 }
-                if(!IsValid(src)) {
+                if(!IsValidState(src)) {
                     throw std::out_of_range("Invalid source state.");
                 }
-                if(!IsValid(dest)) {
+                if(!IsValidState(dest)) {
                     throw std::out_of_range("Invalid dest state");
                 }
                 TransitionMapEntry newTransition {std::make_tuple(src,label),dest};
                 mTransitions.insert(newTransition);
             }
             
-            bool IsValid(StateId state) const {
+            bool IsValidState(StateId state) const {
                 return state < mFinalStates.size();
+            }
+            
+            bool IsValidLabel(Label label) const {
+                return label < ALPHABET_SIZE;
             }
             
             ArcRange GetNext(StateId src, Label label) const {
@@ -75,7 +78,7 @@ namespace FACore {
             }
             
             bool IsFinal(StateId state) const {
-                if(!IsValid(state)) {
+                if(!IsValidState(state)) {
                     return false;
                 }
                 return mFinalStates[state];

@@ -7,9 +7,12 @@
 
 namespace FACore {
     
-    template<unsigned int ALPHABET_SIZE>
+    template<unsigned int AlphabetSize>
     class DAutomaton {
         public:
+            constexpr static unsigned int ALPHABET_SIZE = AlphabetSize;
+            constexpr static unsigned int INVALID_STATE = std::numeric_limits<unsigned int>::max();
+            
             // A StateId is really just an index into a vector
             typedef unsigned int StateId;
             
@@ -19,20 +22,14 @@ namespace FACore {
             // These arrays will be indexed by Label
             typedef std::array<StateId, ALPHABET_SIZE> TransitionArr;
             
-            constexpr static unsigned int AlphabetSize = ALPHABET_SIZE;
-            
-            static inline StateId INVALID_STATE() {
-                return std::numeric_limits<unsigned int>::max();
-            }
-            
             StateId AddState(bool isFinal) {
-                if(mFinalStates.size() == INVALID_STATE()) {
+                if(mFinalStates.size() == INVALID_STATE) {
                     // WARNING this is outside of testing code coverage
                     throw std::out_of_range("Invalid label"); 
                 }
                 StateId result = mTransitions.size();
                 mTransitions.emplace_back();
-                mTransitions[result].fill(INVALID_STATE());
+                mTransitions[result].fill((unsigned int)INVALID_STATE);
                 mFinalStates.push_back(isFinal);
                 return result;
             }
@@ -41,28 +38,33 @@ namespace FACore {
                 if(ALPHABET_SIZE <= label) {
                     throw std::out_of_range("Invalid label");
                 }
-                if(!IsValid(src)) {
+                if(!IsValidState(src)) {
                     throw std::out_of_range("Invalid source state.");
                 }
-                if(!IsValid(dest)) {
+                if(!IsValidState(dest)) {
                     throw std::out_of_range("Invalid dest state");
                 }
                 mTransitions[src][label] = dest;
             }
             
-            bool IsValid(StateId state) const {
+            bool IsValidState(StateId state) const {
                 return state < mTransitions.size();
             }
             
+            bool IsValidLabel(Label label) const {
+                return label < ALPHABET_SIZE;
+            }
+            
             StateId GetNext(StateId src, Label label) const {
-                if(!IsValid(src) || AlphabetSize <= label ) {
-                    return INVALID_STATE();
+                if(IsValidState(src) && IsValidLabel(label) ) {
+                    return mTransitions[src][label];
+                } else {
+                    return INVALID_STATE;
                 }
-                return mTransitions[src][label];
             }
             
             bool IsFinal(StateId state) const {
-                if(!IsValid(state)) {
+                if(!IsValidState(state)) {
                     return false;
                 }
                 return mFinalStates[state];

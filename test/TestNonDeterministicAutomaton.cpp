@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( default_arc_toinvalid )
 BOOST_AUTO_TEST_CASE( invalid_state_behavoir )
 {
     NFA nfa;
-    NFA::StateId invalidState = NFA::INVALID_STATE();
+    NFA::StateId invalidState = NFA::INVALID_STATE;
     BOOST_CHECK(!nfa.IsFinal(invalidState));
     AssertEquals(nfa.GetNext(invalidState,0), {});
 }

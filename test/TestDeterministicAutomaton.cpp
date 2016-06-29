@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE( set_transition )
     dfa.SetArc(state1, 0, state1);
     
     BOOST_CHECK( dfa.GetNext(state1,0) == state1 );
-    BOOST_CHECK( dfa.GetNext(state1,1) == DFA::INVALID_STATE() );
+    BOOST_CHECK( dfa.GetNext(state1,1) == DFA::INVALID_STATE );
 }
 
 
@@ -43,18 +43,18 @@ BOOST_AUTO_TEST_CASE( default_arc_toinvalid )
 {
     DFA dfa;
     // Invalid state, valid label
-    BOOST_CHECK(dfa.GetNext(0,0) == DFA::INVALID_STATE());
+    BOOST_CHECK(dfa.GetNext(0,0) == DFA::INVALID_STATE);
     
     // Valid state, invalid label
     DFA::StateId state = dfa.AddState(true);
-    BOOST_CHECK(dfa.GetNext(0,3) == DFA::INVALID_STATE());
+    BOOST_CHECK(dfa.GetNext(0,3) == DFA::INVALID_STATE);
 }
 
 
 BOOST_AUTO_TEST_CASE( invalid_state_behavoir )
 {
     DFA dfa;
-    DFA::StateId invalidState = DFA::INVALID_STATE();
+    DFA::StateId invalidState = DFA::INVALID_STATE;
     BOOST_CHECK(!dfa.IsFinal(invalidState));
     BOOST_CHECK(dfa.GetNext(invalidState,0) == invalidState);
 }
