@@ -1,16 +1,16 @@
-#define BOOST_TEST_MODULE UnitTest NonDeterministicAutomaton
-#include <boost/test/included/unit_test.hpp>
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 
 #include "NAutomaton.hpp"
+#include <iostream>
+#include <set>
 
 using namespace FACore;
+using namespace std;
 
 bool IsEmpty(const NFA::ArcRange &range) {
     return range.begin() == range.end();
 };
-
-#include <iostream>
-using namespace std;
 
 void AssertEquals(const NFA::ArcRange &range, std::set<NFA::StateId> expected) {
     int count = 0;
@@ -20,6 +20,8 @@ void AssertEquals(const NFA::ArcRange &range, std::set<NFA::StateId> expected) {
     }
     BOOST_CHECK(count == expected.size());
 };
+
+BOOST_AUTO_TEST_SUITE( TestNAutomaton )
 
 BOOST_AUTO_TEST_CASE( simple_pass )
 {
@@ -105,3 +107,5 @@ BOOST_AUTO_TEST_CASE( add_parallel_states )
     BOOST_CHECK( std::distance(arcRange.begin(), arcRange.end()) == 2 );
     BOOST_CHECK( std::distance(arcRange.begin(), arcRange.end()) == 2 );
 }
+
+BOOST_AUTO_TEST_SUITE_END()

@@ -1,8 +1,8 @@
-#define BOOST_TEST_MODULE UnitTest NonDeterministicAutomaton
-#include <boost/test/included/unit_test.hpp>
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 
-#include <memory>
 #include "DRegularLanguage.hpp"
+#include <memory>
 
 using namespace FACore;
 using namespace std;
@@ -44,6 +44,8 @@ template<class LanguageType>
 bool NotInLanguage(LanguageType &language, std::vector<typename LanguageType::StateId> word) {
     return !language.contains(word.begin(), word.end());
 }
+
+BOOST_AUTO_TEST_SUITE( TestDRegularLanguage );
 
 BOOST_AUTO_TEST_CASE( empty_language_alphabet2 )
 {
@@ -115,3 +117,5 @@ BOOST_AUTO_TEST_CASE( thue_morse )
     BOOST_CHECK( thueMorseSequence.contains(4) );
     BOOST_CHECK( InLanguage(thueMorseSequence, {1,0,0}) );
 }
+
+BOOST_AUTO_TEST_SUITE_END();

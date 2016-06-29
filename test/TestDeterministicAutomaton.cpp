@@ -1,9 +1,11 @@
-#define BOOST_TEST_MODULE UnitTest DeterministicAutomaton
-#include <boost/test/included/unit_test.hpp>
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 
 #include "DAutomaton.hpp"
 
 using namespace FACore;
+
+BOOST_AUTO_TEST_SUITE( TestDAutomaton );
 
 BOOST_AUTO_TEST_CASE( simple_pass )
 {
@@ -73,3 +75,5 @@ BOOST_AUTO_TEST_CASE( invalid_arc )
     // invalid label state
     BOOST_CHECK_THROW( dfa.SetArc(state1,2,state1), std::out_of_range);
 }
+
+BOOST_AUTO_TEST_SUITE_END()
