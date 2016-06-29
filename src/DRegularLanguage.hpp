@@ -63,7 +63,7 @@ namespace FACore {
             template<typename IterType>
             bool contains(IterType begin, IterType end) {
                 StateId currentState = mInitialState;
-                for(auto iter = begin; iter != end && currentState != mAutomaton->INVALID_STATE(); ++iter) {
+                for(auto iter = begin; iter != end && currentState != Machine::INVALID_STATE; ++iter) {
                     Character c = *iter;
                     currentState = mAutomaton->GetNext(currentState, c);
                 }
