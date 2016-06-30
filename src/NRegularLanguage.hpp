@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DigitIterator.hpp"
+#include "utils/DigitIterator.hpp"
 #include "NAutomaton.hpp"
 
 #include <memory>

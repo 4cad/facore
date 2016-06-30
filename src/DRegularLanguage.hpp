@@ -1,9 +1,9 @@
 #pragma once
 
-#include <memory>
-
-#include "DigitIterator.hpp"
+#include "utils/DigitIterator.hpp"
 #include "DAutomaton.hpp"
+
+#include <memory>
 
 namespace FACore {
     template<unsigned int ALPHABET_SIZE>
