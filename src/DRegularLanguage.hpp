@@ -1,14 +1,14 @@
+#pragma once
+
 #include <memory>
 
+#include "DigitIterator.hpp"
 #include "DAutomaton.hpp"
 
 namespace FACore {
-    
-    
     template<unsigned int ALPHABET_SIZE>
     class DRegularLanguage {
         
-            
         public:
             typedef DAutomaton<ALPHABET_SIZE> Machine;
             
@@ -16,41 +16,11 @@ namespace FACore {
             typedef typename Machine::StateId StateId;
             
             constexpr static unsigned int AlphabetSize = ALPHABET_SIZE;
-            
-        private:
         
-            class DigitIterator {
-                public:
-                    static DigitIterator end() {
-                        return DigitIterator(0);
-                    }
-                
-                    DigitIterator(unsigned int value) : mValue(value)
-                    {}
-                    
-                    Character operator* () {
-                        return mValue % ALPHABET_SIZE;
-                    }
-                    
-                    DigitIterator& operator++() {
-                        mValue = mValue / ALPHABET_SIZE;
-                        return *this;
-                    }
-                    
-                    bool operator==(const DigitIterator &other) {
-                        return mValue == other.mValue;
-                    }
-                    
-                    bool operator!=(const DigitIterator &other) {
-                        return !operator==(other);
-                    }
-                
-                private:
-                    unsigned int mValue;
-            };
-            
+        private:
+            typedef DigitIterator<ALPHABET_SIZE, Character> Digitizer;
+        
         public:
-                
             DRegularLanguage(std::shared_ptr<const Machine> automaton, StateId initialState) : mAutomaton(automaton), mInitialState(initialState)
             {}
             
@@ -67,12 +37,11 @@ namespace FACore {
                     Character c = *iter;
                     currentState = mAutomaton->GetNext(currentState, c);
                 }
-                
                 return mAutomaton->IsFinal(currentState);
             }
             
-            bool contains(unsigned int number) {
-                return contains(DigitIterator(number), DigitIterator::end());
+            virtual bool contains(unsigned int number) {
+                return contains(Digitizer(number), Digitizer::end());
             }
         
         private:

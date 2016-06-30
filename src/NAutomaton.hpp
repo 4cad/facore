@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdexcept>
 #include <limits>
 
@@ -5,7 +7,6 @@
 #include <boost/dynamic_bitset.hpp>
 
 namespace FACore {
-    
     template<unsigned int AlphabetSize>
     class NAutomaton {
         public:
